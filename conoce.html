@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guardianes – HAL.AI</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/styles.guardianes.css" />
+  <script src="js/nav.js" defer></script>
+</head>
+<body class="fade-in">
+  <audio id="bg-music" src="audio/musicafondomain.mp3" autoplay loop></audio>
+  <video class="bg-section-video" autoplay muted loop>
+    <source src="images/bg-guardianes-loop.mp4" type="video/mp4" />
+  </video>
+  <header>
+    <h1>Guardianes de los Chakras</h1>
+    <button onclick="location.href='index.html'" class="btn-glow">‹ Inicio</button>
+  </header>
+  <main class="guardianes-container">
+    <div id="guardianes" class="guardianes-grid">
+      <!-- Tarjetas generadas por JS -->
+    </div>
+  </main>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch("data/personajes.json")
+        .then(res => res.json())
+        .then(data => {
+          const container = document.getElementById("guardianes");
+          data.forEach(guardian => {
+            const id = guardian.name.toLowerCase();
+            const card = document.createElement("div");
+            card.className = "guardiancard";
+            card.innerHTML = `
+              <img src="images/${id}.png" alt="${guardian.name}" />
+              <div class="info">
+                <h3>${guardian.name}</h3>
+                <p>${guardian.preview}</p>
+                <details><summary>Ver más</summary><p>${guardian.popupContent}</p></details>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        });
+    });
+  </script>
+</body>
+</html>

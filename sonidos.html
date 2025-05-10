@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cámara de Resonancia Cuántica – HAL.AI</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/styles.extra.css" />
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.min.js" defer></script>
+  <script src="js/particles-init.js" defer></script>
+  <script src="js/sounds-data.js" defer></script>
+  <script src="js/sound-fx.js" defer></script>
+  <script src="js/nav.js" defer></script>
+</head>
+<body class="fade-in">
+  <audio id="bg-music" src="audio/musicafondomain.mp3" autoplay loop></audio>
+  <video class="bg-section-video" autoplay muted loop>
+    <source src="images/bg-frecuencias-loop.mp4" type="video/mp4"/>
+  </video>
+  <header>
+    <h1>Biblioteca de Frecuencias</h1>
+    <button onclick="location.href='index.html'" class="btn-back">‹ Inicio</button>
+  </header>
+  <div class="intro-fx">
+    <h2 class="portal-title">Elige tu vibración</h2>
+    <p class="portal-sub">Cada frecuencia abre un portal interior</p>
+  </div>
+  <div class="freq-player-container">
+    <audio id="freq-player" controls class="freq-player"></audio>
+  </div>
+  <section class="radial-container-sounds" id="sounds"></section>
+</body>
+</html>

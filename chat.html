@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat con HAL</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="fade-in">
+  <header>
+    <h1>Chat con HAL</h1>
+    <button onclick="location.href='index.html'" class="btn-back">‹ Inicio</button>
+  </header>
+  <main>
+    <p>Tu compañero felino está listo para conversar 💬😺</p>
+    <div id="chat-container"></div>
+  </main>
+  <script>
+  (function(){
+    if(!window.chatbase || window.chatbase("getState")!=="initialized"){
+      window.chatbase=(...arguments)=>{
+        if(!window.chatbase.q){window.chatbase.q=[]}
+        window.chatbase.q.push(arguments)
+      };
+      window.chatbase=new Proxy(window.chatbase,{
+        get(target,prop){
+          if(prop==="q"){return target.q}
+          return(...args)=>target(prop,...args)
+        }
+      });
+    }
+    const onLoad=function(){
+      const script=document.createElement("script");
+      script.src="https://www.chatbase.co/embed.min.js";
+      script.id="d8T9brhhaeXN4_pzOE2Wp";
+      script.domain="www.chatbase.co";
+      document.body.appendChild(script)
+    };
+    if(document.readyState==="complete"){onLoad()}
+    else{window.addEventListener("load",onLoad)}
+  })();
+  </script>
+</body>
+</html>
