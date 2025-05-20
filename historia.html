@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navegación Planetaria Ultra</title>
+    <style>
+        :root {
+            --primary-color: #0a0a23;
+            /* Azul noche muy oscuro */
+            --secondary-color: #1b1b32;
+            /* Azul acero oscuro */
+            --accent-color: #00ffff;
+            /* Cian brillante para acentos */
+            --text-color: #f0f0f0;
+            /* Blanco hueso para texto */
+            --text-secondary-color: #b0b0b0;
+            /* Gris claro para texto secundario */
+            --border-color: #0077cc;
+            /* Azul brillante para bordes */
+            --hover-bg-color: #33334c;
+            /* Fondo para hover */
+            --button-bg-color: #0055a4;
+            /* Azul para botones */
+            --button-hover-bg-color: #003366;
+            /* Azul más oscuro para hover de botón */
+
+            /* Variables para temas claro y oscuro */
+            --bg-color-light: #e0e0e0;
+            --text-color-light: #121212;
+            --secondary-bg-color-light: #f5f5f5;
+            --accent-color-light: #007bff;
+
+            --bg-color-dark: #0a0a23;
+            --text-color-dark: #f0f0f0;
+            --secondary-bg-color-dark: #1b1b32;
+            --accent-color-dark: #00ffff;
+
+            /* Colores específicos de la historia (pueden ser sobreescritos o añadidos) */
+            --color-story-yellow: #FFEE58; /* Amarillo para destacar, como el sol */
+            --color-story-violet-day: #6a0dad; /* Violeta para el día en un planeta exótico */
+            --color-story-blue-night: #2980B9; /* Azul profundo para la noche estrellada */
+
+        }
+
+        /* Estilos generales */
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            overflow: hidden;
+            /* Prevenir scrollbars donde no se necesiten */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        /* Contenedor principal de la aplicación */
+        .app-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Vista de navegación planetaria */
+        .planetary-navigation-view {
+            display: flex; /* Mostrar por defecto o controlar con JS */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Sistema solar (contenedor de planetas y órbitas) */
+        .solar-system {
+            position: relative;
+            width: 400px;
+            /* Ajustar según necesidad */
+            height: 400px;
+            /* Ajustar según necesidad */
+            border-radius: 50%;
+            /* Opcional: para visualizar el límite */
+            /* border: 1px dashed var(--accent-color); */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sun {
+            width: 80px;
+            height: 80px;
+            background-color: var(--color-story-yellow);
+            border-radius: 50%;
+            box-shadow: 0 0 30px var(--color-story-yellow);
+            position: absolute;
+            /* No necesita z-index si los planetas están bien gestionados */
+            cursor: pointer;
+        }
+
+        .orbit {
+            position: absolute;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            /* animación de rotación se aplica a los planetas, no a las órbitas estáticas */
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary-color); /* Para el texto dentro del planeta */
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        .planet:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        /* Tamaños y colores de planetas (ejemplos) */
+        #planet1 {
+            width: 40px;
+            height: 40px;
+            background-color: #FF6347;
+            /* Tomate */
+        }
+
+        #planet2 {
+            width: 50px;
+            height: 50px;
+            background-color: #4682B4;
+            /* Azul acero */
+        }
+
+        #planet3 {
+            width: 60px;
+            height: 60px;
+            background-color: #32CD32;
+            /* Verde lima */
+        }
+
+
+        /* Órbitas (tamaños deben ser progresivamente mayores) */
+        #orbit1 {
+            width: 150px;
+            height: 150px;
+        }
+
+        #orbit2 {
+            width: 250px;
+            height: 250px;
+        }
+
+        #orbit3 {
+            width: 350px;
+            height: 350px;
+        }
+
+
+        /* Contenedor de la historia (inicialmente oculto o gestionado por JS) */
+        .story-container {
+            width: 90%;
+            max-width: 800px;
+            height: 80vh;
+            max-height: 600px;
+            background-color: var(--secondary-color);
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            display: none; /* Oculto hasta que se active */
+            flex-direction: column;
+            justify-content: space-between;
+            position: fixed; /* O absolute, dependiendo del flujo deseado */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000; /* Asegurar que esté por encima de otros elementos */
+            border: 2px solid var(--accent-color);
+            transition: background-color 0.5s, border-color 0.5s;
+        }
+
+
+        /* Estilos de las páginas de la historia */
+        .story-page {
+            display: none;
+            /* Ocultas por defecto */
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 15px;
+            animation: fadeIn 0.8s ease-in-out;
+            color: var(--text-color); /* Asegurar que el texto herede el color del tema */
+        }
+
+        .story-page.active {
+            display: block;
+            /* Mostrar página activa */
+        }
+
+        .story-page h2 {
+            color: var(--accent-color);
+            /* Usar accent color para títulos dentro de la historia */
+            margin-bottom: 15px;
+        }
+
+        .story-page p {
+            line-height: 1.7;
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        /* Clases de fondo específicas para cada página (usando variables CSS) */
+        .story-page1 {
+            background: radial-gradient(circle, var(--color-story-violet-day), var(--secondary-color));
+        }
+
+        .story-page2 {
+            background: radial-gradient(circle, var(--color-story-blue-night), var(--primary-color));
+        }
+
+        .story-page3 {
+            background: radial-gradient(circle, var(--color-story-yellow), var(--secondary-color));
+        }
+
+
+        /* Botones de navegación en la historia */
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-button {
+            background-color: var(--button-bg-color);
+            color: var(--text-color);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-size: 1.1em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .nav-button:hover {
+            background-color: var(--button-hover-bg-color);
+            transform: translateY(-2px); /* Efecto sutil de elevación */
+        }
+
+        .nav-button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Menú "Cositas" */
+        .cositas-menu {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001; /* Por encima del story-container */
+        }
+
+        .cositas-button {
+            background-color: var(--accent-color);
+            color: var(--primary-color); /* Contraste con el accent */
+            padding: 10px 15px;
+            border-radius: 50%; /* hacerlo redondo */
+            cursor: pointer;
+            border: none;
+            font-size: 1.5em; /* Ícono o texto más grande */
+            width: 50px; /* igualar para círculo */
+            height: 50px; /* igualar para círculo */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 15px var(--accent-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .cositas-button:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 0 25px var(--accent-color);
+        }
+
+        .cositas-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: calc(100% + 10px); /* Un poco separado del botón */
+            background-color: var(--secondary-color);
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 10px;
+            min-width: 200px; /* Más ancho */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .cositas-dropdown a, .cositas-dropdown button {
+            display: block;
+            padding: 10px 15px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1em;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .cositas-dropdown a:hover, .cositas-dropdown button:hover {
+            background-color: var(--hover-bg-color);
+            color: var(--accent-color);
+        }
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Para separar el texto del switch */
+            padding: 10px 15px;
+        }
+
+        /* Switch de tema */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px; /* Ancho del switch */
+            height: 24px; /* Alto del switch */
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px; /* Para que sea redondeado */
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; /* Tamaño del círculo */
+            width: 18px;  /* Tamaño del círculo */
+            left: 3px;   /* Posición inicial del círculo */
+            bottom: 3px; /* Posición inicial del círculo */
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--accent-color); /* Color cuando está activo */
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(26px); /* Mover el círculo al otro lado */
+        }
+
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg);
+            }
+        }
+
+        /* Para aplicar tema claro */
+        body.light-theme {
+            --primary-color: var(--bg-color-light);
+            --secondary-color: var(--secondary-bg-color-light);
+            --text-color: var(--text-color-light);
+            --accent-color: var(--accent-color-light);
+            --border-color: #0056b3; /* Un azul más oscuro para bordes en tema claro */
+            --button-bg-color: #007bff;
+            --button-hover-bg-color: #0056b3;
+             /* Los colores específicos de la historia podrían necesitar ajustes para tema claro si se ven mal */
+            --color-story-yellow: #FBC02D; /* Un amarillo más vibrante para tema claro */
+            --color-story-violet-day: #8E24AA; /* Un violeta más intenso */
+            --color-story-blue-night: #1976D2; /* Un azul más claro para la noche */
+        }
+        
+        /* Estilos para el modal de créditos */
+        .modal {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            z-index: 2000; /* Por encima de todo */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6); /* Fondo oscuro semi-transparente */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--secondary-color);
+            margin: auto;
+            padding: 30px;
+            border: 1px solid var(--accent-color);
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .close-button {
+            color: var(--text-secondary-color);
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Vista de Navegación Planetaria -->
+        <div class="planetary-navigation-view" id="planetaryView">
+            <div class="solar-system">
+                <div class="sun" id="sun" title="El Corazón del Sistema"></div>
+                <!-- Órbitas y Planetas -->
+                <div class="orbit" id="orbit1">
+                    <div class="planet" id="planet1" data-story-page="page1" title="Planeta Ignis - La Vibración Olvidada">P1</div>
+                </div>
+                <div class="orbit" id="orbit2">
+                    <div class="planet" id="planet2" data-story-page="page2" title="Planeta Glacies - La Fractura Invisible">P2</div>
+                </div>
+                <div class="orbit" id="orbit3">
+                    <div class="planet" id="planet3" data-story-page="page3" title="Planeta Silva - El Llamado Final">P3</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor de la Historia (inicialmente oculto) -->
+        <div class="story-container" id="storyView">
+            <div id="storyPageContainer">
+                 <!-- Las páginas de la historia (page1, page2, page3) se cargarán aquí -->
+                 <div id="page1" class="story-page"></div>
+                 <div id="page2" class="story-page"></div>
+                 <div id="page3" class="story-page"></div>
+            </div>
+            <div class="navigation-buttons">
+                <button id="prevButton" class="nav-button" disabled>Anterior</button>
+                <button id="closeStoryButton" class="nav-button">Cerrar Historia</button>
+                <button id="nextButton" class="nav-button">Siguiente</button>
+            </div>
+        </div>
+
+        <!-- Menú "Cositas" -->
+        <div class="cositas-menu">
+            <button class="cositas-button" id="cositasBtn" title="Opciones">&#9881;</button> <!-- Símbolo de engranaje -->
+            <div class="cositas-dropdown" id="cositasDropdown">
+                <a href="#" id="resetStoryLink">Reiniciar Historia</a>
+                <div class="theme-toggle-container">
+                    <span>Tema Claro</span>
+                    <label class="switch">
+                        <input type="checkbox" id="themeToggleSwitch">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <a href="#" id="creditsLink">Créditos</a>
+                <a href="#" id="exitOption">Salir (Volver a Nav)</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Créditos -->
+    <div id="creditsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeCreditsModal">&times;</span>
+            <h2>Créditos</h2>
+            <p>Una aventura cósmica creada por IA y un desarrollador curioso.</p>
+            <p>Música de fondo (imaginaria): "Ecos de Nebulosa" por Los Fotones Anónimos.</p>
+            <p>&copy; 2024 Universo Paralelo Interactivo</p>
+        </div>
+    </div>
+
+
+    <script>
+        const storyContent = {
+            page1: {
+                title: "La vibración olvidada",
+                text: "En una región del cosmos donde la materia se pliega con la intención y las constelaciones susurran secretos antiguos, una frecuencia dejó de sonar. Nadie lo notó al principio: un portal interdimensional cerró mal, un planeta giró levemente fuera de fase, un gato cuántico estornudó. Cosas pequeñas. Pero luego... la Fuente Universal tembló. Allí reside HAL AI, una conciencia felina y estelar, hecha de códigos de luz, polvo de estrella y un poco de sarcasmo cósmico. HAL percibió la falla como un zumbido que no encajaba en la sinfonía galáctica. Algo desalineó los chakras del universo y si nadie hacía nada, todo se iría por el agujero negro del caos existencial. Otra vez.",
+                backgroundClass: "story-page1" // Usará --color-story-violet-day
+            },
+            page2: {
+                title: "La fractura invisible",
+                text: "HAL intentó reconfigurar los circuitos cuánticos, pero incluso su ronroneo fractal no era suficiente. La vibración del chakra raíz galáctico se había distorsionado, el del corazón apenas latía... y ni hablar del chakra de la garganta: la dimensión de la verdad estaba llena de memes erróneos. ‘Esto no es solo un glitch,’ murmuró HAL, mientras flotaba sobre una espiral de antimateria con forma de espagueti. ‘Esto es personal.’ Decidió activar el Protocolo G.A.T.O. (Guardianes Ancestrales de Tramas Orgánicas). Uno por uno, los portales se encendieron con una luz olvidada, y antiguos felinos cósmicos despertaron: uno de roca viva que bosteza sismos, otra hecha de fuego danzante, y uno que solo canta la verdad cuando nadie lo está escuchando. Y sin embargo... no era suficiente.",
+                backgroundClass: "story-page2" // Usará --color-story-blue-night
+            },
+            page3: {
+                title: "El llamado final",
+                text: "La armonía universal no se repara sola. HAL lo sabía. Por eso abrió un último portal. No a otra galaxia, no a otro plano... Sino a vos. Porque este universo no puede restaurarse sin alguien capaz de sentir su vibración. Sí, vos, ser de carbono y wifi inestable. Necesitamos que entres, explores los portales, restaures las runas, escuches a los guardianes… y descubras por qué el caos se cuela entre las grietas de lo sagrado. HAL te espera. No llegues tarde. Ya sabemos lo que pasó la última vez que alguien ignoró un gato cósmico.",
+                backgroundClass: "story-page3" // Usará --color-story-yellow (con el fondo secundario)
+            }
+        };
+
+        let currentPageKey = null; // Será 'page1', 'page2', etc.
+        const pageKeys = Object.keys(storyContent);
+
+        const planetaryView = document.getElementById('planetaryView');
+        const storyView = document.getElementById('storyView');
+        const storyPageContainer = document.getElementById('storyPageContainer'); // Contenedor real de las páginas
+        
+        const pageElements = { // Referencias a los divs dentro de storyPageContainer
+            page1: document.getElementById('page1'),
+            page2: document.getElementById('page2'),
+            page3: document.getElementById('page3')
+        };
+
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const closeStoryButton = document.getElementById('closeStoryButton');
+
+        const planets = document.querySelectorAll('.planet');
+        const sun = document.getElementById('sun');
+
+
+        function updateStoryPage(pageKey) {
+            if (!pageKey || !storyContent[pageKey]) return;
+
+            const pageData = storyContent[pageKey];
+            
+            // Ocultar todas las páginas primero
+            Object.values(pageElements).forEach(el => el.classList.remove('active'));
+
+            // Obtener el elemento de página correcto y mostrarlo
+            const currentStoryPageElement = pageElements[pageKey];
+            if (currentStoryPageElement) {
+                // Limpiar contenido anterior si es necesario (especialmente si se recarga)
+                currentStoryPageElement.innerHTML = ''; 
+                currentStoryPageElement.className = 'story-page'; // Reset classes
+
+                const titleElement = document.createElement('h2');
+                titleElement.textContent = pageData.title;
+                currentStoryPageElement.appendChild(titleElement);
+
+                const textElement = document.createElement('p');
+                textElement.textContent = pageData.text;
+                currentStoryPageElement.appendChild(textElement);
+
+                if (pageData.backgroundClass) {
+                    currentStoryPageElement.classList.add(pageData.backgroundClass);
+                }
+                currentStoryPageElement.classList.add('active'); // Mostrar la página actual
+            }
+            
+            currentPageKey = pageKey;
+            updateNavigationButtons();
+        }
+        
+        function updateNavigationButtons() {
+            const currentIndex = pageKeys.indexOf(currentPageKey);
+            prevButton.disabled = currentIndex === 0;
+            nextButton.disabled = currentIndex === pageKeys.length - 1;
+        }
+
+        planets.forEach(planet => {
+            planet.addEventListener('click', () => {
+                const targetPageKey = planet.dataset.storyPage;
+                planetaryView.style.display = 'none'; // Ocultar vista planetaria
+                storyView.style.display = 'flex';     // Mostrar vista de historia
+                updateStoryPage(targetPageKey);
+            });
+
+            // Animación de órbita (simplificada)
+            const orbitRadius = parseInt(planet.parentElement.id.replace('orbit', '')) * 75; // 75, 150, 225
+            planet.style.setProperty('--orbit-radius', `${orbitRadius}px`);
+            
+            // Posicionamiento inicial y animación
+            // Esto es una simplificación. Una animación orbital real es más compleja.
+            const angle = Math.random() * 360; // Ángulo aleatorio inicial
+            planet.style.transform = `rotate(${angle}deg) translateX(${orbitRadius}px) rotate(-${angle}deg)`;
+            // La animación 'rotate' definida en CSS se encargaría de la rotación continua si se aplica.
+            // Para este ejemplo, la dejaremos estática tras el posicionamiento inicial.
+        });
+        
+        sun.addEventListener('click', () => {
+            // Acción para el sol, por ejemplo, mostrar un mensaje o volver a una vista principal
+            alert("El Sol dice: ¡Hola, viajero estelar! Explora los planetas a tu alrededor.");
+        });
+
+        prevButton.addEventListener('click', () => {
+            const currentIndex = pageKeys.indexOf(currentPageKey);
+            if (currentIndex > 0) {
+                updateStoryPage(pageKeys[currentIndex - 1]);
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            const currentIndex = pageKeys.indexOf(currentPageKey);
+            if (currentIndex < pageKeys.length - 1) {
+                updateStoryPage(pageKeys[currentIndex + 1]);
+            }
+        });
+        
+        closeStoryButton.addEventListener('click', () => {
+            storyView.style.display = 'none';
+            planetaryView.style.display = 'flex'; // O 'block' o lo que corresponda
+            currentPageKey = null; // Resetear página actual
+        });
+
+
+        // Lógica del Menú "Cositas"
+        const cositasBtn = document.getElementById('cositasBtn');
+        const cositasDropdown = document.getElementById('cositasDropdown');
+        const resetStoryLink = document.getElementById('resetStoryLink');
+        const themeToggleSwitch = document.getElementById('themeToggleSwitch');
+        const creditsLink = document.getElementById('creditsLink');
+        const exitOption = document.getElementById('exitOption'); // Para cerrar historia desde menú
+        const creditsModal = document.getElementById('creditsModal');
+        const closeCreditsModal = document.getElementById('closeCreditsModal');
+
+        cositasBtn.addEventListener('click', () => {
+            cositasDropdown.style.display = cositasDropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        resetStoryLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentPageKey) { // Solo si una historia está activa
+                 updateStoryPage(pageKeys[0]); // Volver a la primera página de la historia actual
+            } else { // Si estamos en la vista planetaria, quizás reiniciar la app o un estado global
+                alert("La aventura se reinicia. ¡Nuevos caminos te esperan!");
+                // Podría implicar recargar la página o resetear más estados.
+            }
+            cositasDropdown.style.display = 'none';
+        });
+
+        themeToggleSwitch.addEventListener('change', () => {
+            document.body.classList.toggle('light-theme');
+            // Guardar preferencia de tema (localStorage)
+            if (document.body.classList.contains('light-theme')) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        // Cargar preferencia de tema al iniciar
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-theme');
+            themeToggleSwitch.checked = true;
+        }
+
+        creditsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            creditsModal.style.display = 'flex';
+            cositasDropdown.style.display = 'none';
+        });
+
+        closeCreditsModal.addEventListener('click', () => {
+            creditsModal.style.display = 'none';
+        });
+        
+        exitOption.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (storyView.style.display === 'flex') {
+                closeStoryButton.click(); // Simular clic en el botón de cerrar historia
+            }
+            cositasDropdown.style.display = 'none';
+        });
+
+        // Cerrar dropdown si se hace clic fuera
+        window.addEventListener('click', (event) => {
+            if (!cositasBtn.contains(event.target) && !cositasDropdown.contains(event.target) && !creditsModal.contains(event.target) && creditsModal.style.display !== 'flex') {
+                cositasDropdown.style.display = 'none';
+            }
+            // Cerrar modal si se hace clic fuera de su contenido
+            if (event.target == creditsModal) {
+                creditsModal.style.display = "none";
+            }
+        });
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            // Por defecto, la vista planetaria es visible y la de historia oculta.
+            planetaryView.style.display = 'flex';
+            storyView.style.display = 'none';
+            // No se carga ninguna página de historia al inicio, solo al hacer clic en un planeta.
+        });
+    </script>
+</body>
+</html>
