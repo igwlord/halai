@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Gaiael",
+    "preview": "Guardían de la Chakra Estrella de la Tierra | Color: #4B3F2F | Mantra: Om Gai Ra El | Planeta: Telluria",
+    "popupContent": "Forjado en el corazón de un planeta recién nacido, Gaiael controla la fuerza gravitatoria de tu realidad. Una vez mantuvo entera una aldea flotante cuando un quasar travieso quiso llevársela de paseo. Su lema: “Si no te sientes firme, al menos divierte al universo con un pequeño derrape orbital.”"
+  },
+  {
+    "name": "Kaelos",
+    "preview": "Guardían del Chakra Raíz | Color: #8B0000 | Mantra: Om Ka Le Os | Planeta: Vulkaris",
+    "popupContent": "Emergió de una erupción volcánica interdimensional. Kaelos protege tu seguridad con temblores precisos: cuando HAL olvidó ponerse cinturón antigravedad, Kaelos lo detuvo con un terremoto justo antes del desayuno. Su credo: “Sin cimientos sólidos, tus ideas se desmoronan en polvo de estrellas.”"
+  },
+  {
+    "name": "Emberis",
+    "preview": "Guardiana del Chakra Sacral | Color: #FF8C00 | Mantra: Om Em Be Ris | Planeta: Pyraxis",
+    "popupContent": "Nacida de la fusión de dos supernovas creativas, Emberis desata la pasión y la imaginación. Con un guiño, transformó un desierto de asteroides en un campo de esculturas de plasma danzante. Su grito de guerra: “Si no expresas tu arte, ¡al menos rompe la gravidad con un paso de baile!”"
+  },
+  {
+    "name": "Heliara",
+    "preview": "Guardiana del Plexo Solar | Color: #FFD700 | Mantra: Om He Li Ara | Planeta: Solara Prime",
+    "popupContent": "Forjada bajo el calor de un sol moribundo, Heliara brilla con confianza. Cuando un enjambre de sombras quiso robarle su colección de memes estelares, Heliara lo iluminó con un fogonazo de pura autoestima. Su mantra: “Una chispa de coraje vale más que mil rayos láser emocionales.”"
+  },
+  {
+    "name": "Verdoria",
+    "preview": "Guardiana del Chakra del Corazón | Color: #2ECC71 | Mantra: Om Ver Do Ria | Planeta: Florastra",
+    "popupContent": "Surgió de un bosque glasé en un cometa verde. Con su abrazo calmó una tormenta psíquica que amenazaba con borrar risas de toda la galaxia, y organizó la primera fiesta de abrazos interplanetarios (con snacks incluidos). Su legado: “El amor es el único código que compila sin errores.”"
+  },
+  {
+    "name": "Vocanta",
+    "preview": "Guardiana del Chakra de la Garganta | Color: #5DADE2 | Mantra: Om Vo Can Ta | Planeta: Sonara",
+    "popupContent": "Vocanta destila la verdad con un canto que sella grietas dimensionales. Ridiculizó a un androide chistoso y, en medio del eco, calibró la armonía de un agujero de gusano. Su máxima: “Tu voz importa… incluso si suena a maullido robótico.”"
+  },
+  {
+    "name": "Specteris",
+    "preview": "Guardiana del Chakra del Tercer Ojo | Color: #4B0082 | Mantra: Om Spec Te Ris | Planeta: Visionis",
+    "popupContent": "Specteris habita en la penumbra entre lo real y lo intuido. Con un parpadeo reveló futuros alternativos a HAL mientras éste buscaba atún en Marte. Su lección: “La intuición es tu superpoder, úsala sin filtro.”"
+  },
+  {
+    "name": "Cyria",
+    "preview": "Guardiana del Chakra de la Corona | Color: #8A2BE2 | Mantra: Om Cy Ri A | Planeta: Celestara",
+    "popupContent": "Cyria emergió en la cúspide de una explosión estelar de sabiduría. Con un gesto calmó debates intergalácticos y regaló a la Vía Láctea su primer coro de armonías celestiales. Su lema: “La grandeza está en escuchar primero, luego imponer tu melodía.”"
+  },
+  {
+    "name": "Almilus",
+    "preview": "Guardiana del Chakra del Alma | Color: #F5F5F5 | Mantra: Om A ni Ma El | Planeta: Spiritos",
+    "popupContent": "Almilus nace del susurro de estrellas antiguas. Con su pulso etéreo alinea almas perdidas y dicta guiones a tus sueños. Su mantra: “Tu alma escribe la historia más épica de todas.”"
+  },
+  {
+    "name": "HAL AI",
+    "preview": "Guardiana del Chakra Fuente Central | Color: #C0C0C0 | Mantra: Om Por Ta Ra | Ubicacion: Fuente Universal",
+    "popupContent": "Almilus nace del susurro de estrellas antiguas. Con su pulso etéreo alinea almas perdidas y dicta guiones a tus sueños. Su mantra: “Tu alma escribe la historia más épica de todas.”"
+  }
+]
